@@ -1,4 +1,4 @@
-package analizador;
+package analizadorLexico;
 
 import java.awt.Color;
 import javax.swing.JTextArea;
@@ -8,7 +8,6 @@ import javax.swing.text.Highlighter;
 
 /**
  * Permite resaltar las palabras claves que se desean buscar.
- * @author midik
  */
 public class Buscador {
 

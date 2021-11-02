@@ -1,4 +1,4 @@
-package analizador;
+package analizadorLexico;
 
 /**
  * Tokens posibles en el analizador lexico.
@@ -7,11 +7,20 @@ package analizador;
 public enum TiposToken {
     IDENTIFICADOR("Identificador"),
     NUMERO_ENTERO("Numero entero"),
-    NUMERO_DECIMAL("Numero decimal"),
-    SIGNO_PUNTUACION("Signo de puntuacion"),
+    COMENTARIO("Comentario"),
+    LITERAL("Literal"),
     OPERADOR("Operador"),
     SIGNO_AGRUPACION("Signo de agrupacion"),
-    ERROR("Error");
+    ERROR("Error"),
+    ESCRIBIR("ESCRIBIR"),
+    FIN("FIN"),
+    REPETIR("REPETIR"),
+    INICIAR("INICIAR"),
+    SI("SI"),
+    VERDADERO("VERDADERO"),
+    FALSO("FALSO"),
+    ENTONCES("ENTONCES"),
+    INICIO_TOKEN("inicio");
 
     private final String descripcion;
 

@@ -1,4 +1,4 @@
-package analizador;
+package analizadorLexico;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -26,7 +26,7 @@ public class Archivo {
     }
 
     /**
-     * Lista las de un archivo.
+     * Lista las lineas de un archivo.
      * @param archivo 
      */
     private void listarLineasArchivo(File archivo) {

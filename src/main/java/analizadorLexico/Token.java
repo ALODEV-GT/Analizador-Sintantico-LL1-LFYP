@@ -1,4 +1,4 @@
-package analizador;
+package analizadorLexico;
 
 /**
  * Contiene los miembros necesarios para la construcion de un token.

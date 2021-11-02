@@ -1,6 +1,6 @@
 package frontend;
 
-import analizador.AutomataFinitoDeterminista;
+import analizadorLexico.AutomataFinitoDeterminista;
 
 public class VentanaToken extends javax.swing.JDialog {
 

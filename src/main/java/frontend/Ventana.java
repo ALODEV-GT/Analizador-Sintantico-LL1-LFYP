@@ -1,8 +1,8 @@
 package frontend;
 
-import analizador.AutomataFinitoDeterminista;
-import analizador.Buscador;
-import analizador.Archivo;
+import analizadorLexico.AutomataFinitoDeterminista;
+import analizadorLexico.Buscador;
+import analizadorLexico.Archivo;
 import java.io.File;
 import java.io.FileOutputStream;
 import javax.swing.JFileChooser;
