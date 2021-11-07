@@ -137,9 +137,9 @@ public class TablaProducciones {
         
         //FILA 3
         ArrayList<Integer> producciones3_2 = new ArrayList<>();
-        producciones3_2.add(24);
-        producciones3_2.add(6);
-        producciones3_2.add(22);
+        producciones3_2.add(20);
+        producciones3_2.add(8);
+        producciones3_2.add(21);
         producciones3_2.add(7);
         producciones3_2.add(26);
         tablaTransicion[3][2] = new Contenedor(producciones3_2);
@@ -204,18 +204,18 @@ public class TablaProducciones {
         tablaTransicion[9][3] = new Contenedor(producciones9_3);
         
         ArrayList<Integer> producciones9_4 = new ArrayList<>();
-        producciones9_4.add(10);
         producciones9_4.add(11);
+        producciones9_4.add(10);
         tablaTransicion[9][4] = new Contenedor(producciones9_4);
         
         ArrayList<Integer> producciones9_9 = new ArrayList<>();
-        producciones9_9.add(10);
         producciones9_9.add(11);
+        producciones9_9.add(10);
         tablaTransicion[9][9] = new Contenedor(producciones9_9);
         
         ArrayList<Integer> producciones9_13 = new ArrayList<>();
-        producciones9_13.add(10);
         producciones9_13.add(11);
+        producciones9_13.add(10);
         tablaTransicion[9][13] = new Contenedor(producciones9_13);
         
         //FILA 10

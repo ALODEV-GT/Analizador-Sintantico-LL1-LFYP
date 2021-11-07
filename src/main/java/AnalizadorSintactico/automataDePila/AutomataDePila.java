@@ -5,6 +5,7 @@ import analizadorLexico.TiposToken;
 import analizadorLexico.Token;
 import java.util.ArrayList;
 import java.util.List;
+
 public class AutomataDePila {
 
     private final List<Token> tokens;
@@ -18,35 +19,38 @@ public class AutomataDePila {
         this.pila = new Pila();
         this.iniciarPila();
     }
-   
-    private void iniciarPila(){
+
+    private void iniciarPila() {
         this.pila.apilar(TiposToken.FIN_ARCHIVO.getIdComoTerminal());
         this.pila.apilar(0); // no terminal inicial
     }
-    
-    private void agregarFinArchivo(){
+
+    private void agregarFinArchivo() {
         this.tokens.add(new Token(TiposToken.FIN_ARCHIVO, "$", 0, 0));
     }
-    
-    public void analizar(){
+
+    public void analizar() {
         Token tokenActual;
         int idTipoTokenActual;
-        int idProductorActual=0;
+        int idProductorActual = 0;
         int numToken = 0;
         boolean seguir = true;
-        
-        while(numToken < this.tokens.size() && seguir){
+
+        System.out.println("PILA INICIAL:");
+        this.imprimirPila();
+
+        while (numToken < this.tokens.size() && seguir) {
             tokenActual = this.tokens.get(numToken);
-            idTipoTokenActual = tokenActual.getTipoToken().getIdToken(); // Token: token
+            idTipoTokenActual = tokenActual.getTipoToken().getIdToken(); // Token: idToken
             System.out.println("Token: " + idTipoTokenActual);
-            try { 
+            try {
                 idProductorActual = this.pila.cima();
                 if (idProductorActual < 0) { //Es un terminal
-                    if (idProductorActual == TiposToken.EPSILON.getIdComoTerminal()) { //FIN DE ARCHIVO
-                            System.out.println("<-----------Reduce");
-                            this.pila.retirar();
-                            imprimirPila();
-                    }else{
+                    if (idProductorActual == TiposToken.EPSILON.getIdComoTerminal()) { 
+                        System.out.println("<-----------Reduce");
+                        this.pila.retirar();
+                        imprimirPila();
+                    } else {
                         if (idProductorActual == tokenActual.getTipoToken().getIdComoTerminal()) {
                             System.out.println("<-----------Reduce");
                             this.pila.retirar();
@@ -54,47 +58,48 @@ public class AutomataDePila {
                             numToken++;
                         }
                     }
-                }else{
+                } else {
                     this.pila.retirar();
                     this.apilarProduccion(idProductorActual, idTipoTokenActual);
                 }
             } catch (Exception ex) {
+                seguir = false;
                 System.out.println("OCURRIO UN ERROR +----------+---------------------+----------------------------+------------------------------->");
+                System.out.println("Token: " + tokenActual.getLexema());
                 ex.printStackTrace(System.out);
             }
-            
+
         }
-            
-         System.out.println("Se termino el analisis sintactico...");
-         imprimirPila();
+
+        System.out.println("Se termino el analisis sintactico...");
+        imprimirPila();
     }
-    
-    private void evaluarError(int idProductor, int numToken){
+
+    private void evaluarError(int idProductor, int numToken) {
         String siguientes;
         if (idProductor == 0) {
             System.out.println("Se esperaba un token de tipo: ESCRIBIR, REPETIR, SI, IDENTIFICADOR");
-        }else{
-            siguientes = this.tokens.get(numToken-1).getTipoToken().obtenerSiguientes();
+        } else {
+            siguientes = this.tokens.get(numToken - 1).getTipoToken().obtenerSiguientes();
             System.out.println("Se esperaba un token del tipo: " + siguientes);
         }
     }
-    
-    private void apilarProduccion(int idProductor, int idTokenActual){
-        System.out.println("Shift ["+ idProductor+"]" +"[" +idTokenActual+"]");
+
+    private void apilarProduccion(int idProductor, int idTokenActual) {
+        System.out.println("Shift [" + idProductor + "]" + "[" + idTokenActual + "]");
         ArrayList<Integer> producciones = tablaTransicion[idProductor][idTokenActual].getProducciones();
-        for (int i = producciones.size()-1; i >= 0; i--) {
+        for (int i = producciones.size() - 1; i >= 0; i--) {
             this.pila.apilar(producciones.get(i));
         }
-         imprimirPila();
+        imprimirPila();
     }
-    
-    private void imprimirPila(){
+
+    private void imprimirPila() {
         System.out.println("\n");
         System.out.println("<<-- Pila -->>");
         pila.listar();
         System.out.println("-------------");
         System.out.println("\n");
     }
-    
 
 }
