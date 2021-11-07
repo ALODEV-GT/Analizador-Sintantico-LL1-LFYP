@@ -25,7 +25,7 @@ public class AutomataFinitoDeterminista {
     private int numFilaT = 1;
     private int numColumnaT = 0;
     private boolean reiniciar = false;
-    private String[] palabraReservadas ={"ESCRIBIR", "FIN","REPETIR","INICIAR","SI","VERDADERO","FALSO","ENTONCES"};
+    private String[] palabraReservadas = {"ESCRIBIR", "FIN", "REPETIR", "INICIAR", "SI", "VERDADERO", "FALSO", "ENTONCES"};
 
     /**
      * Convencion de la simbologia: 
@@ -90,9 +90,7 @@ public class AutomataFinitoDeterminista {
     //comillas   "   tipoCaracter = 7
     //saltoLinea  \n  tipoCaracter = 8
     char[] signosAgrupacion = {'(', ')', '[', ']', '{', '}'};  // tipoCaracter = 9
-    char[] operadores = {'+', '-', '*', '/', '%'};  // tipoCaracter = 10
-    
-
+    char[] operadores = {'+', '-', '*', '/', '^','='};  // tipoCaracter = 10
 
     public AutomataFinitoDeterminista(JTextArea taCodigoFuente) {
         this.taCodigoFuente = taCodigoFuente;
@@ -125,26 +123,24 @@ public class AutomataFinitoDeterminista {
 
             caracter = codigoFuente.charAt(posicion);
 
-            if (Character.isWhitespace(caracter) && this.estadoActual !=5 && this.estadoActual != 6 && this.estadoActual !=9 && this.estadoActual !=10) {
-                    seguir = false;
+            if (Character.isWhitespace(caracter) && this.estadoActual != 5 && this.estadoActual != 6 && this.estadoActual != 9 && this.estadoActual != 10) {
+                seguir = false;
             } else {
-                    this.reiniciar = false;
-                    int auxEstadoActual = estadoActual;
-                    estadoActual = obtenerEstadoSiguiente(estadoActual, caracter);
-                    token += caracter;
-                    taTokens.append("Pase del estado S" + auxEstadoActual + " al estado S" + estadoActual + " con: [" + caracter + "]" + "\n");
+                this.reiniciar = false;
+                int auxEstadoActual = estadoActual;
+                estadoActual = obtenerEstadoSiguiente(estadoActual, caracter);
+                token += caracter;
+                taTokens.append("Pase del estado S" + auxEstadoActual + " al estado S" + estadoActual + " con: [" + caracter + "]" + "\n");
             }
 
             if (estadoActual == -1) {
                 seguir = false;
             }
-            
-             if (estadoActual == 11) {
+
+            if (estadoActual == 11) {
                 seguir = false;
             }
-            
-            
-            
+
             numColumnaT++;
             numColumnaE++;
 
@@ -157,21 +153,23 @@ public class AutomataFinitoDeterminista {
         }
 
         if (!token.isBlank() && !tipoToken().equals(TiposToken.ERROR)) {
-             TiposToken tipoToken = tipoToken();
-           if (tipoToken().equals(TiposToken.IDENTIFICADOR) ) {
-               if (this.esPalabraReservada(token)) {
-                   tipoToken = this.obtenerTipoTokenPalabraReservada(token);
-               }
-             }
+            TiposToken tipoToken = tipoToken();
+            if (tipoToken().equals(TiposToken.IDENTIFICADOR)) {
+                if (this.esPalabraReservada(token)) {
+                    tipoToken = this.obtenerTipoTokenPalabraReservada(token);
+                }
+            }
+            
             if (!tipoToken.equals(TiposToken.LITERAL) && !tipoToken.equals(TiposToken.COMENTARIO)) {
                 token = token.replace(" ", "");
-            }else{
-                token = token.replace("\n","");
+            } else {
+                token = token.replace("\n", "");
             }
-           
-            Token nuevoToken = new Token(tipoToken, token, this.numFilaT, this.numColumnaT - 1);
+
+            Token nuevoToken = new Token(establecerTokenCaracter(tipoToken, token), token, this.numFilaT, this.numColumnaT - 1);
             tokens.add(nuevoToken);
             taTokens.append("------------------------------------------------\n");
+
         } else if (!token.isBlank() && tipoToken().equals(TiposToken.ERROR)) {
             Token error = new Token(tipoToken(), token.replace(" ", ""), numFilaE, numColumnaE);
             tokens.add(error);
@@ -179,38 +177,68 @@ public class AutomataFinitoDeterminista {
         }
     }
     
-    
-    private TiposToken obtenerTipoTokenPalabraReservada(String token){
+    private TiposToken establecerTokenCaracter(TiposToken tipo, String token){
+        TiposToken tipoToken = tipo;
+        
+        if (tipoToken.equals(TiposToken.OPERADOR)) {
+            switch(token){
+                case "+":
+                    tipoToken = TiposToken.SIGNO_MAS;
+                    break;
+                case "-":
+                    tipoToken = TiposToken.SIGNO_MENOS;
+                    break;
+                case "*":
+                    tipoToken = TiposToken.SIGNO_POR;
+                    break;
+                case "/":
+                    tipoToken = TiposToken.DIAGONAL;
+                    break;
+                case "^":
+                    tipoToken = TiposToken.SIGNO_POTENCIA;
+                    break;
+                case "=":
+                    tipoToken = TiposToken.SIGNO_IGUAL;
+                    break;
+            }
+        }else if (tipoToken.equals(TiposToken.SIGNO_AGRUPACION)) {
+            switch(token){
+                case "(":
+                    tipoToken = TiposToken.PARENTESIS_APERTURA;
+                    break;
+                case ")":
+                    tipoToken = TiposToken.PARENTESIS_CIERRE;
+                    break;
+            }
+        }
+        
+        return tipoToken;
+    }
+
+    private TiposToken obtenerTipoTokenPalabraReservada(String token) {
         TiposToken tipo = TiposToken.IDENTIFICADOR;
         if (token.equalsIgnoreCase(TiposToken.ESCRIBIR.toString())) {
             tipo = TiposToken.ESCRIBIR;
-        }
-        else if (token.equalsIgnoreCase(TiposToken.FIN.toString())) {
+        } else if (token.equalsIgnoreCase(TiposToken.FIN.toString())) {
             tipo = TiposToken.FIN;
-        }
-        else if (token.equalsIgnoreCase(TiposToken.REPETIR.toString())) {
+        } else if (token.equalsIgnoreCase(TiposToken.REPETIR.toString())) {
             tipo = TiposToken.REPETIR;
-        }
-        else if (token.equalsIgnoreCase(TiposToken.INICIAR.toString())) {
+        } else if (token.equalsIgnoreCase(TiposToken.INICIAR.toString())) {
             tipo = TiposToken.INICIAR;
-        }
-        else if (token.equalsIgnoreCase(TiposToken.SI.toString())) {
+        } else if (token.equalsIgnoreCase(TiposToken.SI.toString())) {
             tipo = TiposToken.SI;
-        }
-        else if (token.equalsIgnoreCase(TiposToken.VERDADERO.toString())) {
+        } else if (token.equalsIgnoreCase(TiposToken.VERDADERO.toString())) {
             tipo = TiposToken.VERDADERO;
-        }
-        else if (token.equalsIgnoreCase(TiposToken.FALSO.toString())) {
+        } else if (token.equalsIgnoreCase(TiposToken.FALSO.toString())) {
             tipo = TiposToken.FALSO;
-        }
-        else if (token.equalsIgnoreCase(TiposToken.ENTONCES.toString())) {
+        } else if (token.equalsIgnoreCase(TiposToken.ENTONCES.toString())) {
             tipo = TiposToken.ENTONCES;
         }
-        
+
         return tipo;
     }
-    
-    private boolean esPalabraReservada(String token){
+
+    private boolean esPalabraReservada(String token) {
         boolean esPalabraReservada = false;
         for (String palabraReservada : this.palabraReservadas) {
             if (palabraReservada.equalsIgnoreCase(token)) {
@@ -220,7 +248,6 @@ public class AutomataFinitoDeterminista {
         }
         return esPalabraReservada;
     }
-    
 
     /**
      * Duevuelve el tipo de token segun el estado actual.
@@ -268,7 +295,7 @@ public class AutomataFinitoDeterminista {
         return tipoToken;
     }
 
-   //Alfabeto 
+    //Alfabeto 
     //guionBajo _     tipoCaracter = 0
     //guionMedio - tipoCaracter = 1
     //letra  a-z, A-Z   tipoCaracter = 2
@@ -285,26 +312,26 @@ public class AutomataFinitoDeterminista {
         int tipo = -1;
 
         if (caracter == '_') {
-            tipo= 0;
-        }else if (caracter =='-') {
+            tipo = 0;
+        } else if (caracter == '-') {
             tipo = 1;
-        }else if (Character.isLetter(caracter)) {
+        } else if (Character.isLetter(caracter)) {
             tipo = 2;
-        }else if (this.pertenece(naturalesPositivos, caracter)) {
+        } else if (this.pertenece(naturalesPositivos, caracter)) {
             tipo = 3;
-        }else if (caracter == '0') {
+        } else if (caracter == '0') {
             tipo = 5;
-        }else if (caracter == '/') {
+        } else if (caracter == '/') {
             tipo = 6;
-        }else if (caracter =='"') {
+        } else if (caracter == '"') {
             tipo = 7;
-        }else if (caracter == '\n') {
+        } else if (caracter == '\n') {
             tipo = 9;
-        }else if (this.pertenece(signosAgrupacion, caracter)) {
+        } else if (this.pertenece(signosAgrupacion, caracter)) {
             tipo = 10;
-        }else if (this.pertenece(operadores, caracter)) {
+        } else if (this.pertenece(operadores, caracter)) {
             tipo = 11;
-        }else  {
+        } else {
             tipo = 8;
         }
         return tipo;
@@ -364,8 +391,8 @@ public class AutomataFinitoDeterminista {
             taTokens.append(t.getLexema() + " ----> " + t.getTipoToken().toString() + " Fila: " + t.getNumFila() + ",Columna:  " + t.getNumColumna() + "\n");
         }
     }
-    
-    public ArrayList<Token> obtenerTokens(){
+
+    public ArrayList<Token> obtenerTokens() {
         return this.tokens;
     }
 

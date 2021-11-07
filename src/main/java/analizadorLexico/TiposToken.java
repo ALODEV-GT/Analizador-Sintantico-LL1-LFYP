@@ -7,23 +7,33 @@ package analizadorLexico;
  */
 public enum TiposToken {
     ESCRIBIR("ESCRIBIR", 0, -1, "siguientes ESCRIBIR"),
-    NUMERO_ENTERO("NUMERO ENTERO", 1, -2, "siguientes NUMERO_ENTERO"),
-    IDENTIFICADOR("IDENTIFICADOR", 2, -3, "siguientes IDENTIFICADOR"),
-    LITERAL("LITERAL", 3, -4, "siguientes LITERAL"),
-    FIN("FIN", 4, -5, "siguientes FIN"),
-    EPSILON("EPSILON", 10, -7, "siguientes"),
-    FIN_ARCHIVO("FIN ARCHIVO", 5, -6, "siguientes"),
-    COMENTARIO("COMENTARIO", 10, -10, "siguientes"),
-    OPERADOR("OPERADOR", 10, -10, "nada"),
-    SIGNO_AGRUPACION("SIGNO DE AGRUPACION", 10, -10, "siguientes"),
-    ERROR("ERROR", 10, -10, "siguientes"),
-    REPETIR("REPETIR", 10, -10, "siguientes"),
-    INICIAR("INICIAR", 10, -10, "siguientes"),
-    SI("SI", 10, -10, "nada"),
-    VERDADERO("VERDADERO", 10, -10, "siguientes"),
-    FALSO("FALSO", 10, -10, "nada"),
-    ENTONCES("ENTONCES", 10, -10, "siguientes"),
-    INICIO_TOKEN("INICIO", 10, -10, "siguientes");
+    REPETIR("REPETIR", 1, -2, "siguientes REPETIR"),
+    SI("SI", 2, -3, "siguientes SI"),
+    IDENTIFICADOR("IDENTIFICADOR", 3, -4, "siguientes IDENTIFICADOR"),
+    NUMERO_ENTERO("NUMERO ENTERO", 4, -5, "siguientes NUMERO_ENTERO"),
+    LITERAL("LITERAL", 5, -6, "siguientes LITERAL"),
+    VERDADERO("VERDADERO", 6, -7, "siguientes VERDADERO"),
+    FALSO("FALSO", 7, -8, "siguientes FALSO"),
+    SIGNO_MAS("SIGNO MAS", 8, -9, "siguientes SIGNO MAS"),
+    SIGNO_MENOS("SIGNO MENOS", 9, -10, "siguientes SIGNO MENOS"),
+    SIGNO_POR("SIGNO POR", 10, -11, "siguientes SIGNO POR"),
+    DIAGONAL("DIAGONAL", 11, -12, "siguientes DIAGONAL"),
+    SIGNO_POTENCIA("SIGNO POTENCIA", 12, -13, "siguientes SIGNO POTENCIA"),
+    PARENTESIS_APERTURA("PARENTESIS APERTURA", 13, -14, "siguientes PARENTESIS APERTURA"),
+    PARENTESIS_CIERRE("PARENTESIS CIERRE", 14, -15, "siguientes PARENTESIS CIERRE"),
+    ENTONCES("ENTONCES", 15, -16, "siguientes ENTONCES"),
+    INICIAR("INICIAR", 16, -17, "siguientes INICIAR"),
+    SIGNO_IGUAL("SIGNO IGUAL", 17, -18, "siguientes SIGNO IGUAL"),
+    FIN("FIN", 18, -19, "siguientes FIN"),
+    FIN_ARCHIVO("FIN ARCHIVO", 19, -20, "siguientes FIN ARCHIVO"),
+    EPSILON("EPSILON", 100, -21, "siguientes EPSILON"),
+    
+    
+    INICIO_TOKEN("INICIO", 100, -100, "siguientes"),
+    COMENTARIO("COMENTARIO", 100, -100, "siguientes"),
+    OPERADOR("OPERADOR", 100, -100, "nada"),
+    SIGNO_AGRUPACION("SIGNO DE AGRUPACION", 100, -100, "siguientes"),
+    ERROR("ERROR", 100, -100, "siguientes");
 
     private final String descripcion;
     private final int idToken;
