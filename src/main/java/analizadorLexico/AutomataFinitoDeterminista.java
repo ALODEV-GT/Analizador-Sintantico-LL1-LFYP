@@ -364,6 +364,10 @@ public class AutomataFinitoDeterminista {
             taTokens.append(t.getLexema() + " ----> " + t.getTipoToken().toString() + " Fila: " + t.getNumFila() + ",Columna:  " + t.getNumColumna() + "\n");
         }
     }
+    
+    public ArrayList<Token> obtenerTokens(){
+        return this.tokens;
+    }
 
     /**
      * Agrupa los tokens sin repetirlos.
@@ -396,7 +400,7 @@ public class AutomataFinitoDeterminista {
      * @param contador
      * @return
      */
-    public String getSingPluralr(int contador) {
+    private String getSingPluralr(int contador) {
         String palabra = " veces.";
         if (contador == 1) {
             palabra = " vez.";
