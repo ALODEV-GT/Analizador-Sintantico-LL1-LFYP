@@ -25,7 +25,7 @@ public class AutomataFinitoDeterminista {
     private int numFilaT = 1;
     private int numColumnaT = 0;
     private boolean reiniciar = false;
-    private String[] palabraReservadas = {"ESCRIBIR", "FIN", "REPETIR", "INICIAR", "SI", "VERDADERO", "FALSO", "ENTONCES"};
+    private final String[] palabraReservadas = {"ESCRIBIR", "FIN", "REPETIR", "INICIAR", "SI", "VERDADERO", "FALSO", "ENTONCES"};
 
     /**
      * Convencion de la simbologia: 
@@ -167,7 +167,9 @@ public class AutomataFinitoDeterminista {
             }
 
             Token nuevoToken = new Token(establecerTokenCaracter(tipoToken, token), token, this.numFilaT, this.numColumnaT - 1);
-            tokens.add(nuevoToken);
+            if (!nuevoToken.getTipoToken().equals(TiposToken.COMENTARIO)) {
+                tokens.add(nuevoToken);
+            }
             taTokens.append("------------------------------------------------\n");
 
         } else if (!token.isBlank() && tipoToken().equals(TiposToken.ERROR)) {
