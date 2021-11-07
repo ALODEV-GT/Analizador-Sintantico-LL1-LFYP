@@ -8,92 +8,20 @@ import java.util.List;
 public class AutomataDePila {
 
     private final List<Token> tokens;
-    private final Contenedor[][] tablaTransicion = new Contenedor[7][6];
+    private final Contenedor[][] tablaTransicion;
     private final Pila pila;
 
     public AutomataDePila(List<Token> tokens) {
+        this.tablaTransicion = new TablaProducciones().getTablaTransicion();
         this.tokens = tokens;
         this.agregarFinArchivo();
         this.pila = new Pila();
         this.iniciarPila();
     }
-    /**FILAS
-     * I = 0
-     * E= 1
-     * C = 2
-     * N = 3
-     * Y = 4
-     * M = 5
-     * F = 6
-     */
-    
-    /**COLUMNAS
-     * ESCRIBIR = 0
-     * numero = 1
-     * id = 2
-     * literal = 3
-     * fin = 4
-     * $ (fin de archivo) = 5
-     */
-    
-    /** ID TERMINALES
-     * ESCRIBIR = -1
-     * numero = -2
-     * id = -3
-     * literal = -4
-     * fin = -5
-     * $ (fin de archivo) = -6
-     * ε = -7
-     */
-
-    {
-        ArrayList<Integer> producciones00 = new ArrayList<>();
-        producciones00.add(1);
-        producciones00.add(0);
-        tablaTransicion[0][0] = new Contenedor(producciones00);
-        
-        ArrayList<Integer> producciones05 = new ArrayList<>();
-        producciones05.add(-7);
-        tablaTransicion[0][5] = new Contenedor(producciones05);
-        
-        ArrayList<Integer> producciones10 = new ArrayList<>();
-        producciones10.add(-1);
-        producciones10.add(2);
-        producciones10.add(6);
-        tablaTransicion[1][0] = new Contenedor(producciones10);
-        
-        ArrayList<Integer> producciones21 = new ArrayList<>();
-        producciones21.add(3);
-        tablaTransicion[2][1] = new Contenedor(producciones21);
-        
-        ArrayList<Integer> producciones22 = new ArrayList<>();
-        producciones22.add(4);
-        tablaTransicion[2][2] = new Contenedor(producciones22);
-        
-        ArrayList<Integer> producciones23 = new ArrayList<>();
-        producciones23.add(5);
-        tablaTransicion[2][3] = new Contenedor(producciones23);
-
-        ArrayList<Integer> producciones31 = new ArrayList<>();
-        producciones31.add(-2);
-        tablaTransicion[3][1] = new Contenedor(producciones31);
-        
-        ArrayList<Integer> producciones42 = new ArrayList<>();
-        producciones42.add(-3);
-        tablaTransicion[4][2] = new Contenedor(producciones42);
-        
-        ArrayList<Integer> producciones53 = new ArrayList<>();
-        producciones53.add(-4);
-        tablaTransicion[5][3] = new Contenedor(producciones53);
-        
-        ArrayList<Integer> producciones64 = new ArrayList<>();
-        producciones64.add(-5);
-        tablaTransicion[6][4] = new Contenedor(producciones64);
-    }
-    
+   
     private void iniciarPila(){
-        this.pila.apilar(-6); 
-        this.pila.apilar(0);
+        this.pila.apilar(TiposToken.FIN_ARCHIVO.getIdComoTerminal());
+        this.pila.apilar(0); // no terminal inicial
     }
     
     private void agregarFinArchivo(){
@@ -131,19 +59,9 @@ public class AutomataDePila {
                     this.apilarProduccion(idProductorActual, idTipoTokenActual);
                 }
             } catch (Exception ex) {
-//                seguir = false;
-//                ex.printStackTrace(System.out);   
-                this.pila.apilar(idProductorActual);
-                this.evaluarError(idProductorActual, numToken);
-                 this.imprimirPila();
-                if (!this.pila.esVacia()) {
-                    this.pila.retirar();
-                }else{
-                    seguir = false;
-                }
-                this.imprimirPila();
+                System.out.println("OCURRIO UN ERROR +----------+---------------------+----------------------------+------------------------------->");
+                ex.printStackTrace(System.out);
             }
-            
             
         }
             
