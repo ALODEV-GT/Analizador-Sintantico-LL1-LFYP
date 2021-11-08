@@ -11,6 +11,7 @@ public class AutomataDePila {
     private final List<Token> tokens;
     private final Contenedor[][] tablaTransicion;
     private final Pila pila;
+    private final TablaSimbolos tabla = new TablaSimbolos();
 
     public AutomataDePila(List<Token> tokens) {
         this.tablaTransicion = new TablaProducciones().getTablaTransicion();
@@ -35,6 +36,8 @@ public class AutomataDePila {
         int idProductorActual = 0;
         int numToken = 0;
         boolean seguir = true;
+        boolean esAsignacion = false;
+        Asignacion asignacion = null;
 
         System.out.println("PILA INICIAL:");
         this.imprimirPila();
@@ -45,8 +48,23 @@ public class AutomataDePila {
             System.out.println("Token: " + idTipoTokenActual);
             try {
                 idProductorActual = this.pila.cima();
+
+//                if (idProductorActual == 0 && idTipoTokenActual == 3) { //asignacion
+//                    System.out.println("Se inicio la asignacion");
+//                    asignacion = new Asignacion();
+//                    esAsignacion = true;
+//                }
+//
+//                if (esAsignacion && idProductorActual == -19) { //FIN 
+//                    System.out.println("Se agrego la nueva asignacion");
+//                    System.out.println(asignacion.getIdentificador() + "=" + asignacion.getValor());
+//                    this.tabla.agregarAsignacion(asignacion);
+//                    asignacion = null;
+//                    esAsignacion = false;
+//                }
+
                 if (idProductorActual < 0) { //Es un terminal
-                    if (idProductorActual == TiposToken.EPSILON.getIdComoTerminal()) { 
+                    if (idProductorActual == TiposToken.EPSILON.getIdComoTerminal()) {
                         System.out.println("<-----------Reduce");
                         this.pila.retirar();
                         imprimirPila();
@@ -55,6 +73,17 @@ public class AutomataDePila {
                             System.out.println("<-----------Reduce");
                             this.pila.retirar();
                             imprimirPila();
+//                            if (esAsignacion && idProductorActual == -4) {
+//                                System.out.println("SE AGREGO EL IDENTIFICADOR");
+//                                System.out.println("Identifiador: " + tokenActual.getLexema());
+//                                asignacion.setIdentificador(tokenActual.getLexema());
+//                            }
+//
+//                            if (esAsignacion && idProductorActual == -5) {
+//                                System.out.println("SE AGREGO EL VALOR");
+//                                System.out.println("Valor: " + tokenActual.getLexema());
+//                                asignacion.setValor(Integer.valueOf(tokenActual.getLexema()));
+//                            }
                             numToken++;
                         }
                     }
@@ -68,11 +97,14 @@ public class AutomataDePila {
                 System.out.println("Token: " + tokenActual.getLexema());
                 ex.printStackTrace(System.out);
             }
-
         }
 
         System.out.println("Se termino el analisis sintactico...");
         imprimirPila();
+
+//        for (Asignacion a : this.tabla.getTabla()) {
+//            System.out.println(a.getIdentificador() + "=" + a.getValor());
+//        }
     }
 
     private void evaluarError(int idProductor, int numToken) {
