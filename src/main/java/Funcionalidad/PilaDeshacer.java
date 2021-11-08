@@ -21,12 +21,15 @@ public class PilaDeshacer {
     }
 
     public void agregarCambio(String cambio) {
-        System.out.println("Se agrego algo");
         cambios.add(cambio);
     }
     
     public int getSize(){
         return cambios.size();
+    }
+    
+    public void vaciarPila(){
+        cambios = new ArrayList<>();
     }
 
 }

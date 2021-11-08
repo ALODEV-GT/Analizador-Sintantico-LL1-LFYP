@@ -20,6 +20,7 @@ public class Ventana extends javax.swing.JFrame {
     private File archivoActual = null;
     private Document documento = null;
     private final PilaDeshacer cambiosDeshacer = new PilaDeshacer();
+    private boolean modificado = false;
 
     public Ventana() {
         initComponents();
@@ -32,7 +33,7 @@ public class Ventana extends javax.swing.JFrame {
         this.documento = taCodigoFuente.getDocument();
         documento.addDocumentListener(evento);
         cambiosDeshacer.agregarCambio(taCodigoFuente.getText());
-        
+
     }
 
     @SuppressWarnings("unchecked")
@@ -238,6 +239,11 @@ public class Ventana extends javax.swing.JFrame {
         jMenu1.add(jMenuItem1);
 
         jMenuItem4.setText("Nuevo");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem4);
 
         jMenuItem2.setText("Guardar");
@@ -323,35 +329,46 @@ public class Ventana extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAnalisisSintacticoActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        JFileChooser fileChosser = new JFileChooser();
-        int seleccion = fileChosser.showOpenDialog(this);
-
-        if (seleccion == JFileChooser.APPROVE_OPTION) {
+         JFileChooser fileChosser = new JFileChooser();
+        int seleccion = fileChosser.showOpenDialog(this);  
+        
+        if (modificado) {
+            if (seleccion == JFileChooser.APPROVE_OPTION) {
+            OpcionesDoc ventanaOpciones = new OpcionesDoc(this, true, false);
+            ventanaOpciones.setVisible(true);
             File archivo = fileChosser.getSelectedFile();
             this.archivoActual = archivo;
             this.cambiarTituloVentana(archivo.getName());
             Archivo cargarArchivo = new Archivo(archivo);
             cargarArchivo.mostrarLineas(taCodigoFuente);
+            cambiosDeshacer.vaciarPila();
+            cambiosDeshacer.agregarCambio(taCodigoFuente.getText());
         }
+            
+        } else {
+            if (seleccion == JFileChooser.APPROVE_OPTION) {
+            File archivo = fileChosser.getSelectedFile();
+            this.archivoActual = archivo;
+            this.cambiarTituloVentana(archivo.getName());
+            Archivo cargarArchivo = new Archivo(archivo);
+            cargarArchivo.mostrarLineas(taCodigoFuente);
+            cambiosDeshacer.vaciarPila();
+            cambiosDeshacer.agregarCambio(taCodigoFuente.getText());
+        }
+        }
+        
+        
+       
+
+        
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        this.guardarComo();
+        this.guardarComo(null);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-
-        if (archivoActual == null) {
-            this.guardarComo();
-        } else {
-            String documento = taCodigoFuente.getText();
-            boolean guardado = new Archivo().guardarArchivo(archivoActual, documento);
-            if (guardado) {
-                JOptionPane.showMessageDialog(null, "Cambios guardados");
-            } else {
-                JOptionPane.showMessageDialog(null, "No se pudo guardar el archivo");
-            }
-        }
+        this.guardar(null);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
@@ -374,7 +391,18 @@ public class Ventana extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnDeshacerActionPerformed
 
-    private void guardarComo() {
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        if (modificado) {
+            OpcionesDoc ventanaOpciones = new OpcionesDoc(this, true,true);
+            ventanaOpciones.setVisible(true);
+        } else {
+            this.reiniciarDoc();
+            reiniciarDoc();
+        }
+
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    public void guardarComo(OpcionesDoc opciones) {
         JFileChooser fileChosser = new JFileChooser();
         int seleccion = fileChosser.showDialog(null, "Guardar como");
 
@@ -389,7 +417,41 @@ public class Ventana extends javax.swing.JFrame {
             } else {
                 JOptionPane.showMessageDialog(null, "No se pudo guardar el archivo");
             }
+            modificado = false;
+            if (opciones != null) {
+                reiniciarDoc();
+                opciones.dispose();
+            }
         }
+    }
+
+    public void guardar(OpcionesDoc opciones) {
+        if (opciones != null) {
+            opciones.dispose();
+        }
+        
+        if (archivoActual == null) {
+            this.guardarComo(opciones);
+        } else {
+            String contenido = taCodigoFuente.getText();
+            boolean guardado = new Archivo().guardarArchivo(archivoActual, contenido);
+            if (guardado) {
+                JOptionPane.showMessageDialog(null, "Cambios guardados");
+            } else {
+                JOptionPane.showMessageDialog(null, "No se pudo guardar el archivo");
+            }
+            if (opciones != null) {
+                reiniciarDoc();
+            }
+            modificado = false;
+        }
+    }
+
+    public void reiniciarDoc() {
+        this.taCodigoFuente.setText("");
+        this.setTitle("");
+        this.archivoActual = null;
+        modificado = false;
     }
 
     private void cambiarTituloVentana(String nombreArchivo) {
@@ -397,15 +459,16 @@ public class Ventana extends javax.swing.JFrame {
     }
 
     private class ListenerCambiosCodigoFuente implements DocumentListener {
-        
-        ListenerCambiosCodigoFuente(){
-            
+
+        ListenerCambiosCodigoFuente() {
+
         }
 
         Temporizador temporizador = new Temporizador();
 
         @Override
         public void insertUpdate(DocumentEvent de) {
+            modificado = true;
             if (!temporizador.isAlive()) {
                 temporizador = new Temporizador();
                 temporizador.start();
@@ -414,6 +477,7 @@ public class Ventana extends javax.swing.JFrame {
 
         @Override
         public void removeUpdate(DocumentEvent de) {
+            modificado = true;
             if (!temporizador.isAlive()) {
                 temporizador = new Temporizador();
                 temporizador.start();
@@ -431,19 +495,17 @@ public class Ventana extends javax.swing.JFrame {
 
         @Override
         public void run() {
-             
-             
+
             for (int i = 2; i > 0; i--) {
                 try {
-                    System.out.println("seg restantes: " + i);
                     sleep(1000);
                 } catch (InterruptedException ex) {
                     System.err.println("Ocurrio un error con el hilo Temporizador");
                 }
             }
-            
-                cambiosDeshacer.agregarCambio(taCodigoFuente.getText());
-                btnDeshacer.setEnabled(true);
+
+            cambiosDeshacer.agregarCambio(taCodigoFuente.getText());
+            btnDeshacer.setEnabled(true);
         }
     }
 
