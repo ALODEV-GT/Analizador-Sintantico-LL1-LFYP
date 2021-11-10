@@ -25,7 +25,7 @@ public class Ventana extends javax.swing.JFrame {
     public Ventana() {
         initComponents();
         this.setLocationRelativeTo(null);
-        this.taTransiciones.setEditable(false);
+        this.taPila.setEditable(false);
         this.taErrores.setEditable(false);
         this.btnVerTokens.setEnabled(false);
 
@@ -52,7 +52,7 @@ public class Ventana extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         taCodigoFuente = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
-        taTransiciones = new javax.swing.JTextArea();
+        taPila = new javax.swing.JTextArea();
         jScrollPane3 = new javax.swing.JScrollPane();
         taErrores = new javax.swing.JTextArea();
         tfPalabraClave = new javax.swing.JTextField();
@@ -164,9 +164,9 @@ public class Ventana extends javax.swing.JFrame {
         taCodigoFuente.setRows(5);
         jScrollPane1.setViewportView(taCodigoFuente);
 
-        taTransiciones.setColumns(20);
-        taTransiciones.setRows(5);
-        jScrollPane2.setViewportView(taTransiciones);
+        taPila.setColumns(20);
+        taPila.setRows(5);
+        jScrollPane2.setViewportView(taPila);
 
         taErrores.setColumns(20);
         taErrores.setRows(5);
@@ -297,7 +297,7 @@ public class Ventana extends javax.swing.JFrame {
     private void btnAnalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnalizarActionPerformed
         btnVerTokens.setEnabled(false);
         AutomataFinitoDeterminista afd = new AutomataFinitoDeterminista(taCodigoFuente);
-        afd.analizar(taTransiciones);
+        afd.analizar();
         afd.mostrarErrores(taErrores);
         this.afd = afd;
         if (taErrores.getText().isBlank() && !taCodigoFuente.getText().isBlank()) {
@@ -325,7 +325,9 @@ public class Ventana extends javax.swing.JFrame {
 
     private void btnAnalisisSintacticoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnalisisSintacticoActionPerformed
         AutomataDePila adp = new AutomataDePila(afd.obtenerTokens());
-        adp.analizar();
+        taPila.setText("");
+        adp.analizar(taPila);
+        adp.mostrarErrores(taErrores);
     }//GEN-LAST:event_btnAnalisisSintacticoActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
@@ -534,7 +536,7 @@ public class Ventana extends javax.swing.JFrame {
     private javax.swing.JPanel pnlBackground;
     private javax.swing.JTextArea taCodigoFuente;
     private javax.swing.JTextArea taErrores;
-    private javax.swing.JTextArea taTransiciones;
+    private javax.swing.JTextArea taPila;
     private javax.swing.JTextField tfPalabraClave;
     // End of variables declaration//GEN-END:variables
 }

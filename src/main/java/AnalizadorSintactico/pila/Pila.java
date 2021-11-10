@@ -220,15 +220,18 @@ public class Pila {
     /**
      * Despliega en pantalla los elementos de la pìla.
      */
-    public void listar() {
+    public String listar() {
+        String lista = "\n<<-- Pila -->>\n";
         // Crea una copia de la pila.
         Nodo aux = inicio;
         // Recorre la pila hasta el ultimo nodo.
         while (aux != null) {
-          //  System.out.println("|\t" + aux.getValor() + "\t|");
-            System.out.println(" [" + aux.getValor() + "] ");
-           // System.out.println("-----------------");
+            //  System.out.println("|\t" + aux.getValor() + "\t|");
+            lista += " [" + aux.getValor() + "] \n";
+            // System.out.println("-----------------");
             aux = aux.getSiguiente();
         }
+        lista += "-------------\n";
+        return lista;
     }
 }

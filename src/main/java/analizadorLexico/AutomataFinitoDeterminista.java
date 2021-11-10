@@ -97,10 +97,9 @@ public class AutomataFinitoDeterminista {
         this.codigoFuente = taCodigoFuente.getText();
     }
 
-    public void analizar(JTextArea taTransiciones) {
-        taTransiciones.setText("");
+    public void analizar() {
         while (posicion < codigoFuente.length()) {
-            obtenerToken(taTransiciones);
+            obtenerToken();
         }
     }
 
@@ -109,7 +108,7 @@ public class AutomataFinitoDeterminista {
      *
      * @param taTokens
      */
-    private void obtenerToken(JTextArea taTokens) {
+    private void obtenerToken() {
         boolean seguir = true;
         estadoActual = 0;
         String token = "";
@@ -130,7 +129,6 @@ public class AutomataFinitoDeterminista {
                 int auxEstadoActual = estadoActual;
                 estadoActual = obtenerEstadoSiguiente(estadoActual, caracter);
                 token += caracter;
-                taTokens.append("Pase del estado S" + auxEstadoActual + " al estado S" + estadoActual + " con: [" + caracter + "]" + "\n");
             }
 
             if (estadoActual == -1) {
@@ -170,12 +168,10 @@ public class AutomataFinitoDeterminista {
             if (!nuevoToken.getTipoToken().equals(TiposToken.COMENTARIO)) {
                 tokens.add(nuevoToken);
             }
-            taTokens.append("------------------------------------------------\n");
 
         } else if (!token.isBlank() && tipoToken().equals(TiposToken.ERROR)) {
             Token error = new Token(tipoToken(), token.replace(" ", ""), numFilaE, numColumnaE);
             tokens.add(error);
-            taTokens.append("------------------------------------------------\n");
         }
     }
     
