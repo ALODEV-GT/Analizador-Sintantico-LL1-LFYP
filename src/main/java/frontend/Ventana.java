@@ -26,7 +26,7 @@ public class Ventana extends javax.swing.JFrame {
         //Deshabilitar las areas que no son editables
         this.taPila.setEditable(false);
         this.taErrores.setEditable(false);
-        
+
         //Desactivar boton "Ver tokens"
         this.btnVerTokens.setEnabled(false);
 
@@ -34,7 +34,7 @@ public class Ventana extends javax.swing.JFrame {
         ListenerCambiosCodigoFuente evento = new ListenerCambiosCodigoFuente();
         this.documento = taCodigoFuente.getDocument();
         documento.addDocumentListener(evento);
-        
+
         //Estado inicial de la pila
         cambiosDeshacer.agregarCambio(taCodigoFuente.getText());
     }
@@ -61,17 +61,14 @@ public class Ventana extends javax.swing.JFrame {
         tfPalabraClave = new javax.swing.JTextField();
         btnBuscar = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
-        jMenuItem6 = new javax.swing.JMenuItem();
+        jmiAbrir = new javax.swing.JMenu();
+        jmiNuevo = new javax.swing.JMenuItem();
+        jmiGuardar = new javax.swing.JMenuItem();
+        jmiGuardarComo = new javax.swing.JMenuItem();
+        jmiDeshacer = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(1050, 650));
         setMinimumSize(new java.awt.Dimension(1050, 650));
         setResizable(false);
 
@@ -84,6 +81,7 @@ public class Ventana extends javax.swing.JFrame {
 
         jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
+        btnVerTokens.setFont(new java.awt.Font("Ubuntu", 0, 12)); // NOI18N
         btnVerTokens.setText("VER TOKENS");
         btnVerTokens.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -119,7 +117,7 @@ public class Ventana extends javax.swing.JFrame {
             }
         });
 
-        btnDeshacer.setText("<-");
+        btnDeshacer.setText("Deshacer");
         btnDeshacer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDeshacerActionPerformed(evt);
@@ -138,29 +136,30 @@ public class Ventana extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(btnVerTokens, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnVerTokens, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnAnalisisSintactico))
+                        .addComponent(btnAnalisisSintactico)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(btnPegar, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnDeshacer, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(btnDeshacer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE, false)
+                    .addComponent(btnPegar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCopiar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDeshacer, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCopiar)
-                    .addComponent(btnPegar)
-                    .addComponent(btnDeshacer))
-                .addGap(16, 16, 16)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAnalizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnVerTokens, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAnalizar, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnAnalisisSintactico, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(9, 9, 9))
+                .addGap(23, 23, 23))
         );
 
         taCodigoFuente.setColumns(20);
@@ -202,7 +201,7 @@ public class Ventana extends javax.swing.JFrame {
                         .addComponent(tfPalabraClave, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 31, Short.MAX_VALUE))
+                        .addGap(0, 37, Short.MAX_VALUE))
                     .addGroup(pnlBackgroundLayout.createSequentialGroup()
                         .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 679, Short.MAX_VALUE)
@@ -228,48 +227,42 @@ public class Ventana extends javax.swing.JFrame {
                 .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 19, Short.MAX_VALUE))
+                .addGap(0, 495, Short.MAX_VALUE))
         );
 
-        jMenu1.setText("Archivo");
+        jmiAbrir.setText("Archivo");
 
-        jMenuItem1.setText("Abrir");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        jmiNuevo.setText("Abrir");
+        jmiNuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                jmiNuevoActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        jmiAbrir.add(jmiNuevo);
 
-        jMenuItem4.setText("Nuevo");
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+        jmiGuardar.setText("Nuevo");
+        jmiGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
+                jmiGuardarActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem4);
+        jmiAbrir.add(jmiGuardar);
 
-        jMenuItem2.setText("Guardar");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        jmiGuardarComo.setText("Guardar");
+        jmiGuardarComo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                jmiGuardarComoActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem2);
+        jmiAbrir.add(jmiGuardarComo);
 
-        jMenuItem3.setText("Guardar como");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+        jmiDeshacer.setText("Guardar como");
+        jmiDeshacer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
+                jmiDeshacerActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem3);
-
-        jMenuItem5.setText("Deshacer");
-        jMenu1.add(jMenuItem5);
-
-        jMenuItem6.setText("Rehacer");
-        jMenu1.add(jMenuItem6);
+        jmiAbrir.add(jmiDeshacer);
 
         jMenuItem7.setText("Acerca de");
         jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
@@ -277,9 +270,9 @@ public class Ventana extends javax.swing.JFrame {
                 jMenuItem7ActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem7);
+        jmiAbrir.add(jMenuItem7);
 
-        jMenuBar1.add(jMenu1);
+        jMenuBar1.add(jmiAbrir);
 
         setJMenuBar(jMenuBar1);
 
@@ -333,51 +326,46 @@ public class Ventana extends javax.swing.JFrame {
         adp.mostrarErrores(taErrores);
     }//GEN-LAST:event_btnAnalisisSintacticoActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-         JFileChooser fileChosser = new JFileChooser();
-        int seleccion = fileChosser.showOpenDialog(this);  
-        
+    private void jmiNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiNuevoActionPerformed
+        JFileChooser fileChosser = new JFileChooser();
+        int seleccion = fileChosser.showOpenDialog(this);
+
         if (modificado) {
             if (seleccion == JFileChooser.APPROVE_OPTION) {
-            OpcionesDoc ventanaOpciones = new OpcionesDoc(this, true, false);
-            ventanaOpciones.setVisible(true);
-            File archivo = fileChosser.getSelectedFile();
-            this.archivoActual = archivo;
-            this.cambiarTituloVentana(archivo.getName());
-            Archivo cargarArchivo = new Archivo(archivo);
-            cargarArchivo.mostrarLineas(taCodigoFuente);
-            cambiosDeshacer.vaciarPila();
-            cambiosDeshacer.agregarCambio(taCodigoFuente.getText());
-        }
-            
+                OpcionesDoc ventanaOpciones = new OpcionesDoc(this, true, false);
+                ventanaOpciones.setVisible(true);
+                File archivo = fileChosser.getSelectedFile();
+                this.archivoActual = archivo;
+                this.cambiarTituloVentana(archivo.getName());
+                Archivo cargarArchivo = new Archivo(archivo);
+                cargarArchivo.mostrarLineas(taCodigoFuente);
+                cambiosDeshacer.vaciarPila();
+                cambiosDeshacer.agregarCambio(taCodigoFuente.getText());
+            }
         } else {
             if (seleccion == JFileChooser.APPROVE_OPTION) {
-            File archivo = fileChosser.getSelectedFile();
-            this.archivoActual = archivo;
-            this.cambiarTituloVentana(archivo.getName());
-            Archivo cargarArchivo = new Archivo(archivo);
-            cargarArchivo.mostrarLineas(taCodigoFuente);
-            cambiosDeshacer.vaciarPila();
-            cambiosDeshacer.agregarCambio(taCodigoFuente.getText());
+                File archivo = fileChosser.getSelectedFile();
+                this.archivoActual = archivo;
+                this.cambiarTituloVentana(archivo.getName());
+                Archivo cargarArchivo = new Archivo(archivo);
+                cargarArchivo.mostrarLineas(taCodigoFuente);
+                cambiosDeshacer.vaciarPila();
+                cambiosDeshacer.agregarCambio(taCodigoFuente.getText());
+            }
         }
-        }
-        
-        
-       
 
-        
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_jmiNuevoActionPerformed
 
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+    private void jmiDeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiDeshacerActionPerformed
         this.guardarComo(null);
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
+    }//GEN-LAST:event_jmiDeshacerActionPerformed
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+    private void jmiGuardarComoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiGuardarComoActionPerformed
         this.guardar(null);
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+    }//GEN-LAST:event_jmiGuardarComoActionPerformed
 
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
-        JOptionPane.showMessageDialog(null, "Realizado por: Brayan Alonzo", "Acerca de", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Autor: ALODEV", "Acerca de", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     private void btnCopiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCopiarActionPerformed
@@ -396,16 +384,16 @@ public class Ventana extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnDeshacerActionPerformed
 
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+    private void jmiGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiGuardarActionPerformed
         if (modificado) {
-            OpcionesDoc ventanaOpciones = new OpcionesDoc(this, true,true);
+            OpcionesDoc ventanaOpciones = new OpcionesDoc(this, true, true);
             ventanaOpciones.setVisible(true);
         } else {
             this.reiniciarDoc();
             reiniciarDoc();
         }
 
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
+    }//GEN-LAST:event_jmiGuardarActionPerformed
 
     public void guardarComo(OpcionesDoc opciones) {
         JFileChooser fileChosser = new JFileChooser();
@@ -434,7 +422,7 @@ public class Ventana extends javax.swing.JFrame {
         if (opciones != null) {
             opciones.dispose();
         }
-        
+
         if (archivoActual == null) {
             this.guardarComo(opciones);
         } else {
@@ -523,19 +511,17 @@ public class Ventana extends javax.swing.JFrame {
     private javax.swing.JButton btnPegar;
     private javax.swing.JButton btnVerTokens;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
-    private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JMenu jmiAbrir;
+    private javax.swing.JMenuItem jmiDeshacer;
+    private javax.swing.JMenuItem jmiGuardar;
+    private javax.swing.JMenuItem jmiGuardarComo;
+    private javax.swing.JMenuItem jmiNuevo;
     private javax.swing.JPanel pnlBackground;
     private javax.swing.JTextArea taCodigoFuente;
     private javax.swing.JTextArea taErrores;
