@@ -24,10 +24,6 @@ public class PilaDeshacer {
         cambios.add(cambio);
     }
     
-    public int getSize(){
-        return cambios.size();
-    }
-    
     public void vaciarPila(){
         cambios = new ArrayList<>();
     }

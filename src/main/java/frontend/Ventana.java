@@ -6,7 +6,6 @@ import analizadorLexico.AutomataFinitoDeterminista;
 import analizadorLexico.Buscador;
 import analizadorLexico.Archivo;
 import java.io.File;
-import java.io.FileOutputStream;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
@@ -15,7 +14,6 @@ import javax.swing.text.Document;
 
 public class Ventana extends javax.swing.JFrame {
 
-    private FileOutputStream salida;
     private AutomataFinitoDeterminista afd = null;
     private File archivoActual = null;
     private Document documento = null;
@@ -25,15 +23,20 @@ public class Ventana extends javax.swing.JFrame {
     public Ventana() {
         initComponents();
         this.setLocationRelativeTo(null);
+        //Deshabilitar las areas que no son editables
         this.taPila.setEditable(false);
         this.taErrores.setEditable(false);
+        
+        //Desactivar boton "Ver tokens"
         this.btnVerTokens.setEnabled(false);
 
+        //Agregar listener de cambios en el documento
         ListenerCambiosCodigoFuente evento = new ListenerCambiosCodigoFuente();
         this.documento = taCodigoFuente.getDocument();
         documento.addDocumentListener(evento);
+        
+        //Estado inicial de la pila
         cambiosDeshacer.agregarCambio(taCodigoFuente.getText());
-
     }
 
     @SuppressWarnings("unchecked")
